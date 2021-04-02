@@ -1,4 +1,4 @@
-FROM node:8-alpine
+FROM node:14-alpine
 
 LABEL author="Gustavo Arantes" maintainer="me@arantes.dev"
 
