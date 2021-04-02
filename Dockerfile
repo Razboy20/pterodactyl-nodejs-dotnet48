@@ -4,8 +4,6 @@ LABEL author="Gustavo Arantes" maintainer="me@arantes.dev"
 
 RUN apk add --no-cache \
   ca-certificates \
-  \
-  # .NET Core dependencies
   krb5-libs \
   libgcc \
   libintl \
@@ -13,20 +11,13 @@ RUN apk add --no-cache \
   libstdc++ \
   zlib
 
-RUN apk add --no-cache --update libc6-compat ffmpeg \
-  && adduser -D -h /home/container container
-
 ENV \
   # Configure web servers to bind to port 80 when present
   ASPNETCORE_URLS=http://+:80 \
   # Enable detection of running in a container
   DOTNET_RUNNING_IN_CONTAINER=true \
   # Set the invariant mode since icu_libs isn't included (see https://github.com/dotnet/announcements/issues/20)
-  DOTNET_SYSTEM_GLOBALIZATION_INVARIANT=true \
-  # Pterodactyl user
-  USER=container \
-  # Pterodactyl home
-  HOME=/home/container
+  DOTNET_SYSTEM_GLOBALIZATION_INVARIANT=true
 
 RUN dotnet_version=3.1.13 \
   && wget -O dotnet.tar.gz https://dotnetcli.azureedge.net/dotnet/Runtime/$dotnet_version/dotnet-runtime-$dotnet_version-linux-musl-x64.tar.gz \
@@ -37,8 +28,12 @@ RUN dotnet_version=3.1.13 \
   && ln -s /usr/share/dotnet/dotnet /usr/bin/dotnet \
   && rm dotnet.tar.gz
 
-WORKDIR /home/container
-USER container
+RUN apk add --no-cache --update libc6-compat ffmpeg \
+  && adduser -D -h /home/container container
 
-COPY ./entrypoint.sh /entrypoint.sh
-CMD ["/bin/ash", "/entrypoint.sh"]
+USER        container
+ENV         USER=container HOME=/home/container
+WORKDIR     /home/container
+
+COPY        ./entrypoint.sh /entrypoint.sh
+CMD         ["/bin/ash", "/entrypoint.sh"]
