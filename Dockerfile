@@ -23,14 +23,10 @@ RUN python3 -m ensurepip && \
     rm -r /root/.cache
 
 # Mono
-ENV MONO_VERSION 4.2.2.30-2
-
-RUN apk add --no-cache --virtual=build-dependencies xz && \
-    wget https://archive.archlinux.org/packages/m/mono/mono-$MONO_VERSION-x86_64.pkg.tar.xz -O /tmp/mono.pkg.tar.xz && \
-    tar -xJf /tmp/mono.pkg.tar.xz && \
-    mozroots --import --ask-remove && \
-    apk del build-dependencies && \
-    rm /tmp/*
+RUN apk add --no-cache mono --repository http://dl-cdn.alpinelinux.org/alpine/edge/testing && \
+    apk add --no-cache --virtual=.build-dependencies ca-certificates && \
+    cert-sync /etc/ssl/certs/ca-certificates.crt && \
+    apk del .build-dependencies
 
 # Runtime
 ENV \
