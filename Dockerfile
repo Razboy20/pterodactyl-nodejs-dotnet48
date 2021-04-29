@@ -22,11 +22,11 @@ RUN python3 -m ensurepip && \
     if [ ! -e /usr/bin/pip ]; then ln -s pip3 /usr/bin/pip ; fi && \
     rm -r /root/.cache
 
-# Mno
+# Mono
 ENV MONO_VERSION 4.2.2.30-2
 
 RUN apk add --no-cache --virtual=build-dependencies xz && \
-    wget --progress=dot:mega https://archive.archlinux.org/packages/m/mono/mono-$MONO_VERSION-x86_64.pkg.tar.xz -O /tmp/mono.pkg.tar.xz && \
+    wget https://archive.archlinux.org/packages/m/mono/mono-$MONO_VERSION-x86_64.pkg.tar.xz -O /tmp/mono.pkg.tar.xz && \
     tar -xJf /tmp/mono.pkg.tar.xz && \
     mozroots --import --ask-remove && \
     apk del build-dependencies && \
