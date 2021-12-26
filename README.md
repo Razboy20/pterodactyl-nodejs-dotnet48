@@ -1,1 +1,1 @@
-# Nodejs + dotnet runtime 3.1 + python3
+# Nodejs + dotnet runtime 6.0.1 + nodejs 14
