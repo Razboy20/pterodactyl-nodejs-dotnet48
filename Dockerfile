@@ -5,7 +5,7 @@ LABEL author="Gustavo Arantes & Razboy20" maintainer="me@arantes.dev"
 # Other
 
 RUN apk add --no-cache \
-  python python-dev python3 python3-dev \
+  python3 python3-dev \
   linux-headers build-base bash git \
   ca-certificates \
   krb5-libs \
